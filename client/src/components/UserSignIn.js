@@ -64,7 +64,9 @@ export default class UserSignIn extends Component {
 
   submit = () => {
     const { context } = this.props
+    const { from } = this.props.location.state || { from: { pathname: '/authenticated' } }
     const { username, password } = this.state
+
     context.actions.signIn(username, password)
       .then(user => {
         if (user === null) {
@@ -72,7 +74,7 @@ export default class UserSignIn extends Component {
             return { errors: [ 'Sign-in was unsuccessful' ] }
           })
         } else {
-          this.props.history.push('/authenticated')
+          this.props.history.push(from) // from ensures that the redirect and history push go to the site that the user was navigating from
           console.log(`SUCCESS! ${username} is now signed in!`)
         }
       })
